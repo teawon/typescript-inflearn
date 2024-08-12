@@ -1,0 +1,20 @@
+{
+  // 컴파일할 타입스크립트의 파일의 범위 설정
+  "include": ["src"],
+
+  // compilerOptions - 컴파일 결과물에 대한 상세 설정
+  "compilerOptions": {
+    // 컴파일 결과 생성되는 자바스크립트 코드의 버전을 설정 [ES5 / ESNext(최신)]
+    "target": "ESNext",
+    // @types 버전이 20버전 이상으로 업데이트 되면서 타입 정의 파일에 대한 검사를 생략하는 옵션을 추가해야함
+    "skipLibCheck": true,
+    // 변환 JS의 모듈시스템 설정 [CommonJS / ESNext(최신)]
+    "module": "ESNext",
+    // 컴파일 결과물의 디렉토리 설정
+    "outDir": "dist",
+    // 엄격한 검사 설정
+    "strict": true,
+    // 타입스크립트 파일이 로컬 모듈(독립 모듈)로 취급
+    "moduleDetection": "force"
+  }
+}
