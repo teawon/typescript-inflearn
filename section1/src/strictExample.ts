@@ -1,3 +1,4 @@
+//@ts-expect-error
 export const hello = (message) => {
   console.log(message);
 };

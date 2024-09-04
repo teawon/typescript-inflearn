@@ -1,6 +1,7 @@
+// TODO : 다른 설정은 뭐가 있을지 찾아보기 (자주 사용하는 어떤 옵션들이 있을까 & 실무에서는?)
 {
   // 컴파일할 타입스크립트의 파일의 범위 설정
-  "include": ["src"],
+  "include": ["./src"],
 
   // compilerOptions - 컴파일 결과물에 대한 상세 설정
   "compilerOptions": {
@@ -11,7 +12,7 @@
     // 변환 JS의 모듈시스템 설정 [CommonJS / ESNext(최신)]
     "module": "ESNext",
     // 컴파일 결과물의 디렉토리 설정
-    "outDir": "dist",
+    "outDir": "./dist",
     // 엄격한 검사 설정
     "strict": true,
     // 타입스크립트 파일이 로컬 모듈(독립 모듈)로 취급
