@@ -103,3 +103,45 @@
 
 - `[key] : string` 과 같이 키와 값의 타입을 지정
 - 인덱스 시그니처와 특정 필드에 대한 타입을 명시하려면 & 연산자 사용하기
+
+### 2.4 Enum
+
+- 숫자형 enum
+  - 값을 넣지 않아도 0부터, 할당된 값부터 1씩 증가하며 자동 할당된다
+- 문자형 enum
+
+```
+  enum Role {
+    ADMIN = 10, // 10 할당
+    USER, // 11 할당(자동)
+    GUEST, // 12 할당(자동)
+  }
+
+enum Language {
+  korean = "ko",
+  english = "en",
+}
+
+const user1 = {
+  language : Language.korean
+  role: Role.ADMIN, //관리자
+};
+
+
+- 1.  enum의 경우 자동으로 숫자가 할당되는 과정에서 의도치않은 접근 예외처리 힘듬
+- - 또한 즉시 실행 함수 형태로 코드를 생성하기 때문에 Tree-shaking되지 않는다
+-
+- 2.  const enum의 경우 별도의 객체가 생성되지는 않는다.
+- - 말 그대로 치환하듯 해당 문자열이 삽입됨 (실제 코드를 보면 객체가 안만들어짐)
+- - ts에서 --isolateModules 옵션을 사용하면 스코프 문제로 문제가 될 수 있음
+- - Object.keys, Object.entries를 이용해서 값들에 대해 순회 불가
+-
+- 3.  as const
+- - 단순 객체형태로 정의되므로 Tree-shaking 가능
+- - Object.keys, Object.entries를 이용해서 값들에 대해 순회 가능
+
+-
+-
+- https://techblog.woowahan.com/9804/
+
+```
