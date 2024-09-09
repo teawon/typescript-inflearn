@@ -170,3 +170,9 @@ const user1 = {
   let b: unknown = "hello"; // string -> unknown
   let a: never = 1; // number -> never ❌
 ```
+
+### 3.1.2 객체타입
+
+- 객체의 경우에는 속성을 기준으로 집합의 관계가 생성된다
+  - 상위 (더 포괄적인) 객체로 업캐스팅이 가능
+  -
