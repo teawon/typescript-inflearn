@@ -156,3 +156,17 @@ const user1 = {
   - 의도적인 에러 상황을 나타낼때 사용하기도 함
 
 # 3. TypeScript 이해하기
+
+## 3.1 타입과 집합
+
+### 3.1.1 기본타입
+
+![image_1](image.png)
+
+- 상위 타입에는 하위 타입을 할당할 수 있다. (반대는 X)
+
+```
+  let a: unknown = 1; // number -> unknown
+  let b: unknown = "hello"; // string -> unknown
+  let a: never = 1; // number -> never ❌
+```
