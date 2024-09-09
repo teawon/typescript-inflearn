@@ -145,3 +145,14 @@ const user1 = {
 - https://techblog.woowahan.com/9804/
 
 ```
+
+### 2.5 any , unknown, void, Never
+
+- unknown
+  - any와 유사하지만 메서드, 연산, 변수 할당이 안된다
+  - 즉 타입을 좁혀 안전하게 사용해야하고 런타임 에러를 줄일 수 있는 안전한 타입
+- void : 어떠한 값도 반환하지 않을 떄
+- never : 모순, 불가능을 의미
+  - 의도적인 에러 상황을 나타낼때 사용하기도 함
+
+# 3. TypeScript 이해하기
