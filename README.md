@@ -175,4 +175,22 @@ const user1 = {
 
 - 객체의 경우에는 속성을 기준으로 집합의 관계가 생성된다
   - 상위 (더 포괄적인) 객체로 업캐스팅이 가능
-  -
+
+## 3.2 대수 타입
+
+- Union : `let a: string | number;`
+- Intersection : `let variable: number & string; // = never`
+
+## 3.3 타입 추론
+
+- 변수 선언
+  - 초기값을 기준으로 타입을 추론
+- 함수의 반환 값 (return)을 기준으로
+- 기본 값이 설정된 매개변수
+- 주의 해야하는 상황
+  - 초기값을 생략하면 any로 추론
+  - const 상수의 경우 가장 좁은 타입으로 추론된다
+    - `const num = 10` // 10 Literal
+    - `const str = "hello"` // hello Litiral
+  - 여러가지 배열을 가지는 타입 -> union의 추론
+    - `const arr = [1,'2']` // (number | string) []
