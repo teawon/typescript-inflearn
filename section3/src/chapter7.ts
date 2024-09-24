@@ -65,3 +65,11 @@ function login_(user: User_) {
 }
 
 // 위와 같이 태그 프로퍼티를 추가로 정의해 타입을 적절히 좁힐 수 있다.
+
+type BAD_USER_TYPE = {
+  tag: "GUEST" | "ADMIN" | "MEMBER";
+  name: string;
+  visitCount?: string;
+};
+
+// 위 코드는.. tag에 따라 유의미하게 타입을 분리해 추론할 수 없다.
