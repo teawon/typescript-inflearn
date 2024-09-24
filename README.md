@@ -206,3 +206,39 @@ const user1 = {
   - `as unknown as` 사용되는걸 많이 본거같은데?
     - unknown의 경우 모든 유형에 할당이 가능하기 때문에 항상 타입을 정의할 수 있다
     - TODO // 사용 사례 추가
+
+## 3.5 타입 좁히기
+
+- `typeof` , `instanceof` , `in` 과 같은 타입 가드를 사용해 타입을 좁혀 추론
+- `typeof value === "object"` 의 경우 `null` 값도 통과 한다.
+- `Date` 객체의 경우 `value instanceof Date` 형태로 사용
+  - 인스턴스의 경우 위 타입가드를 쓴다.
+- 특정 필드값이 있음을 확인할 때에는 `in`을 사용
+
+## 3.5.1 서로소 유니온 타입
+
+- 교집합이 없는 타입으로 만든 유니온 타입
+
+  - 서로 겹치는게 없는 타입
+  - 태그 프로퍼티를 통해 타입을 직관적으로 분리하기(서로 포함 관계를 가지지 않도록)
+    - 판별 프로퍼티는 값을 나타내는 Unit Type으로 선언되어야 한다
+    - `void`, `string`이 아닌 특정 리터럴이나 값
+  - ```
+        type Admin = {
+            tag: "ADMIN";
+            name: string;
+            kickCount: number;
+        };
+
+        type Member = {
+            tag: "MEMBER";
+            name: string;
+            point: number;
+        };
+
+        type Guest = {
+          tag: "GUEST";
+          name: string;
+          visitCount: number;
+        };
+    ```
