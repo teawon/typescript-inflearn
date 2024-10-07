@@ -262,3 +262,35 @@ const user1 = {
     const add2: Operation2 = (a, b) => a + b;
 
     ```
+
+## 4.2 함수 타입 호환성
+
+- 반환 값의 타입 호환(공변성 - 업캐스팅)
+
+  ```
+  type WideReturn = () => number;
+  type NarrowReturn = () => 10;
+
+  let witeReturn: WideReturn = () => 10;
+  let narrowReturn: NarrowReturn = () => 10;
+
+  witeReturn = narrowReturn; // ✅
+  ```
+
+- 매개변수 값의 타입 호환(반공변성 - 다운 캐스팅)
+  - 매개변수의 값이 더 구체적일때
+  - 매개변수의 개수가 더 많을 때
+
+```
+type WideParam = (value: number) => void;
+type NarrowParam = (value: 10) => void;
+
+let wideParam: WideParam = (value) => {};
+let narrowParam: NarrowParam = (value) => {};
+
+narrowParam = wideParam; // ✅
+```
+
+- 어떤 함수가 매개변수로 any를 받아서 내부에서 any로 할 수 있는 여러 매서드를 사용한다면 결국 any보다 더 좁은 타입의 매개변수를 받는 함수는 호환될 수 없다.
+
+- 반대로 좁은 타입의 매개변수를 받아 내부 로직을 처리하는 함수에 대해서, 더 많은 매개변수를 허용해도 상관없다. 어처피 좁은 타입의 매개변수는 호환될 수 있으니까
