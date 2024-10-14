@@ -294,3 +294,74 @@ narrowParam = wideParam; // ✅
 - 어떤 함수가 매개변수로 any를 받아서 내부에서 any로 할 수 있는 여러 매서드를 사용한다면 결국 any보다 더 좁은 타입의 매개변수를 받는 함수는 호환될 수 없다.
 
 - 반대로 좁은 타입의 매개변수를 받아 내부 로직을 처리하는 함수에 대해서, 더 많은 매개변수를 허용해도 상관없다. 어처피 좁은 타입의 매개변수는 호환될 수 있으니까
+
+## 4.3 함수 오버로딩
+
+- 하나의 함수를 매개변수의 개수/타입에 따라 다르게 동작하도록 만드는 문법
+
+- 오버로드 시그니쳐 : 선언부만 만든 것
+- 구현 시그니쳐 : 실제 함수의 실행 로직
+
+- 왜 사용하는가?
+
+  - 1.  코드의 가독성 증가(한눈에 파악)
+  - 2.  특정 매개변수 조합에 대해서만 함수가 호출되도록 제한
+    - 잘못된 함수 호출 방지
+
+- 화살표 함수(const)는 익명함수를 할당하므로 function키워드를 사용해 사용해야 한다
+
+- ```
+  function format(data: string): string;
+  function format(data: number, locale: string): string;
+
+
+  function format(data: string | number, locale?: string): string {
+  if (typeof data === "string") {
+  return `Formatted string: ${data}`;
+  } else if (typeof data === "number" && locale) {
+  return new Intl.NumberFormat(locale).format(data);
+  } else {
+  return data.toString();
+  }
+  }
+
+  ```
+
+## 4.4 사용자 정의 타입가드
+
+- 속성의 유무(`in`)를 사용해 타입을 좁히면 아래의 문제점이 있다
+  - 속성이 수정되거나 변경되면 의도치 않은 타입으로 추론될 수 있음
+- 아래와 같이 타입가드를 사용하자
+
+- ```
+  function warning_bad(animal: Animal) {
+    if ("isBark" in animal) {
+      console.log(animal.isBark ? "짖습니다" : "안짖어요");
+    } else if ("isScratch" in animal) {
+      console.log(animal.isScratch ? "할큅니다" : "안할퀴어요");
+    }
+  }
+
+
+
+  function isDog(animal: Animal): animal is Dog {
+    return (animal as Dog).isBark !== undefined;
+  }
+
+  // Cat 타입인지 확인하는 타입가드
+  function isCat(animal: Animal): animal is Cat {
+    return (animal as Cat).isScratch !== undefined;
+  }
+
+  function warning_good(animal: Animal) {
+    if (isDog(animal)) {
+      console.log(animal.isBark ? "짖습니다" : "안짖어요");
+    } else {
+      console.log(animal.isScratch ? "할큅니다" : "안할퀴어요");
+    }
+  }
+  ```
+
+```
+
+```
