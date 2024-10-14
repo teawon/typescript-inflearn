@@ -362,6 +362,19 @@ narrowParam = wideParam; // ✅
   }
   ```
 
-```
+# 5. 인터페이스
 
-```
+## 5.1 개요
+
+- 오버로딩의 경우 함수타입 표현식이 아닌, 호출 시그니처 형태로 선언해야 한다
+- ```
+  interface Person {
+    readonly name: string;
+    sayHi(): void;
+    sayHi(a: number): void;
+    // sayHi : (a) => void (X)
+  }
+  ```
+- interface의 경우 type과 같이 'union' , 'intersection' 사용불가
+  - type A = C | B & D
+- 그러나 extends를 사용한 확장은 가능
