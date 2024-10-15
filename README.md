@@ -378,3 +378,63 @@ narrowParam = wideParam; // ✅
 - interface의 경우 type과 같이 'union' , 'intersection' 사용불가
   - type A = C | B & D
 - 그러나 extends를 사용한 확장은 가능
+
+## 5.2 확장
+
+- `extends`를 사용해 중복된 프로퍼티를 재선언하지 않고 타입을 확장할 수 있다.
+- 재정의
+  - 상속받는 부모 타입의 서브타입의 속성을 재정의하는게 가능하다
+  - 즉 더 "좁은 범위"로 확장
+- 다중 상속도 가능하다
+- ```
+      interface Animal {
+        name: string;
+        color: string;
+      }
+
+      interface Dog extends Animal {
+        name : 'dog' // 서브타입이므로 속성을 재정의할 수 있음
+        breed: string;
+      }
+
+      interface Cat extends Animal {
+        isScratch: boolean;
+      }
+
+      interface DogCat extends Dog, Cat {
+        grade : number;
+      }
+
+  ```
+
+## 5.3 선언 합침
+
+- 인터페이스의 경우 동일한 스코프 내에서 같은 이름을 선언할 수 있다
+  - 이 경우 최종 타입은 하나로 합쳐진 타입이 된다
+  - 같은 속성에 대해 다른 타입이 사용되어선 안된다
+- 이를 활용해 라이브러리의 인터페이스를 확장하는게 가능하다고 함(사용하는건 아직 못봄..)
+
+- ```
+    interface Person {
+      name: string;
+    }
+
+    interface Person {
+      age: number;
+    }
+
+    const person: Person = {
+      name: "name",
+      age: 20,
+    };
+
+    /**
+    * 단 아래와 같이 같은 이름의 인터페이스 속성이 다르다면 에러가 발생한다(서브타입도 안됨)
+    */
+
+    interface Person {
+      // @ts-expect-error
+      name: "subtype"; // name은 이미 string으로 선언되어있다
+      age: number;
+    }
+  ```
