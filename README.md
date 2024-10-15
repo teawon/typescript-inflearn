@@ -509,3 +509,54 @@ narrowParam = wideParam; // ✅
 
   }
   ```
+
+## 6.2 접근 제어자
+
+- `public` - 인스턴스 및 외부클래스에서 프로퍼티 접근 가능
+- `private` - 해당 클래스 외에 어디서든 접근 불가
+- `protected` - 해당 클래스 및 상속받는 클래스 외에 어디서든 접근 불가
+- 생성자 함수 내 접근 제어자 선언시...
+  - 프로퍼티 선언 생략 (자동으로 입력되므로 오히려 적었을때 중복 에러가 나온다)
+  - 생성자 할당 함수 생략 가능
+- ```
+  class Employee__ {
+    // 생성자
+    constructor(
+      private name: string,
+      protected age: number,
+      public position: string
+    ) {}
+
+    // 메서드
+    work() {
+      console.log(`${this.name} 일함`);
+    }
+  }
+  ```
+
+## 6.3 인터페이스와 클래스
+
+- 인터페이스는 클래스의 "설계도" 역할을 수행하기도 함
+  - `implement` 키워드 사용
+  - 모든 메서드 및 타입을 내부에서 구현해야함
+- 인터페이스에서 정의한 속성은 모두 `pubilc` 이므로 다른 접근자를 사용하려면 인터페이스에서 분리해야함
+- ```
+
+    interface CharacterInterface {
+      name: string;
+      moveSpeed: number;
+      move(): void;
+    }
+
+    class Character implements CharacterInterface {
+      constructor(
+        public name: string,
+        public moveSpeed: number,
+        private extra: string // 인터페이스에서 분리하여 private를 사용했다..
+      ) {}
+
+      move(): void {
+        console.log(`${this.moveSpeed} 속도로 이동!`);
+      }
+    }
+  ```
