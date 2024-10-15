@@ -438,3 +438,74 @@ narrowParam = wideParam; // ✅
       age: number;
     }
   ```
+
+# 6. 클래스
+
+## 6.1 개념
+
+- 보통 파스칼표기법 사용
+- 동일한 형태의 "객체"를 쉽게 생성하게 도와주는 문법
+- `this`를 통해 클래스 내부의 속성에 접근 가능
+- `new 이름`의 형태로 생성자 함수를 호출한다.
+- 상속을 통해 동일한 속성, 메서드를 활용할 수 있다.
+  - `super`문법을 통해 부모 클래스의 생성자를 호출
+- 클래스는 "타입"과 같이 사용할 수 있다.
+
+- ```
+    // js예재
+    class Student {
+    name;
+    age;
+    grade;
+
+    constructor(name, grade, age) {
+      this.name = name;
+      this.grade = grade;
+      this.age = age;
+    }
+  }
+
+
+    class StudentDeveloper extends Student {
+
+      favoriteSkill;
+
+      constructor(name, grade, age, favoriteSkill) {
+        super(name, grade, age);
+        this.favoriteSkill = favoriteSkill;
+      }
+
+      programming() {
+        console.log(`${this.favoriteSkill}로 프로그래밍 함`);
+      }
+    }
+
+  ```
+
+- ```
+  // ts예제
+  class Employee {
+    name: string = "";
+    position? = ""; // 선택적 프로퍼티
+
+    constructor(name: string, position: string) {
+      this.name = name;
+      this.position = position;
+    }
+
+    work() {
+      console.log("일함");
+    }
+  }
+
+
+  class ExecutiveOfficer extends Employee {
+    officeNumber: number;
+
+    constructor(name: string, position: string, officeNumber: number) {
+      super(name, position);
+      this.officeNumber = officeNumber;
+    }
+
+  }
+  ```
