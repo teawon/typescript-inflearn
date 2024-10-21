@@ -14,6 +14,12 @@ let keyPair: KeyPair<string, number> = {
   value: 0,
 };
 
+// @ts-expect-error
+let keyPair_: KeyPair<K, V> = {
+  key: "key",
+  value: 0,
+};
+
 /**
  * 인덱스 시그니처 활용
  */

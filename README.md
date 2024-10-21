@@ -560,3 +560,100 @@ narrowParam = wideParam; // ✅
       }
     }
   ```
+
+# 7. Generic
+
+## 7.1 개념
+
+- 함수나 인터페이스, 클래스, 타입별칭 등에서 타입을 마치 변수로 받아 다양한 타입과 함께 동작할 수 있게 해주는 문법
+- ```
+  let arr = func<[number, number, number]>([1, 2, 3]);
+  // 위 함수는 그냥 사용했다면 number[] 형태로 자동 추론되지만, T에 직접적으로 변수를 입력함으로써 값을 처리
+  ```
+- 타입 변수를 "제한" 할 때에는, extends를 활용한다.
+  - `T extends { length : number}`
+  - 위 코드는 배열이나 길이 속성을 가지고 있는 요소일때 활용
+- ```
+  // TODO Q) 여러 제네릭 변수가 있을때, 일부 필드는 직접 선언하고 일부는 자동추론되게 할 수 없는가?
+  // A) 없다. 하나라도 직접 선언한 순간 나머지 타입은 자동추론이 안된다. React-query에서도 그랬는데 타입을 명시한순간 다 써야했다..
+  // 이건 고칠 수 없을까?
+  ```
+
+## 7.2 제네릭 인터페이스
+
+- ```
+    interface KeyPair<K, V> {
+      key: K;
+      value: V;
+    }
+
+    // 제네릭 인터페이스의 경우 "반드시" 제네릭 변수를 명시해주어야 한다.
+    let keyPair: KeyPair<string, number> = {
+      key: "key",
+      value: 0,
+    };
+
+    // @ts-expect-error
+    let keyPair_: KeyPair<K, V> = {
+      key: "key",
+      value: 0,
+    };
+  ```
+
+- ```
+   // 활용 예시
+
+    const developerUser: User<Developer> = {
+      name: "test1",
+      profile: {
+        type: "developer",
+        skill: "TypeScript",
+      },
+    };
+
+    const studentUser: User<Student> = {
+      name: "test2",
+      profile: {
+        type: "student",
+        school: "가톨릭대학교",
+      },
+    };
+
+  ```
+
+## 7.3 제네릭 클래스
+
+- ```
+
+    class List<T> {
+      constructor(private list: T[]) {}
+
+      push(data: T) {
+        this.list.push(data);
+      }
+
+      pop() {
+        return this.list.pop();
+      }
+
+      // 아래와 같이 타입가드를 통해 "특정 타입"의 로직을 분기처리 할 수 있다.
+      print() {
+        if (typeof this.list[0] === "string") {
+          // 문자열 처리 로직
+          console.log("String list:", this.list.join(", "));
+        } else {
+          console.log(this.list);
+        }
+      }
+    }
+
+    const numberList_ = new List([1, 2, 3]);
+    const stringList_ = new List(["1", "2"]);
+
+  ```
+
+## 7.5 Promise
+
+- Promise의 경우 기본적으로 타입을 추론해주지 않는다.
+- 내부에서 Generic으로 선언되어있으며 타입을 직접 명시 해 resolve 데이터에 대한 타입을 드러낸다
+- 단 에러(실패)의 경우 타입은 unknown으로 고정되어있으며 타입을 좁혀 분기처리를 수행해야 한다.
