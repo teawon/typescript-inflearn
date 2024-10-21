@@ -657,3 +657,119 @@ narrowParam = wideParam; // ✅
 - Promise의 경우 기본적으로 타입을 추론해주지 않는다.
 - 내부에서 Generic으로 선언되어있으며 타입을 직접 명시 해 resolve 데이터에 대한 타입을 드러낸다
 - 단 에러(실패)의 경우 타입은 unknown으로 고정되어있으며 타입을 좁혀 분기처리를 수행해야 한다.
+
+# 8. 조건부타입
+
+## 8.1 Indexed Access Types
+
+- 객체 타입에서 특정 키의 타입을 가져오는 기능
+- 인덱스에 "값" 이 아닌 "타입(리터럴)"이 들어와야 한다
+
+  - `const authorKey = "author";`
+  - `function printAuthorInfo_(author: Post[authorKey]) { // Error `
+
+- ```
+
+    interface Post {
+      title: string;
+      content: string;
+      author: {
+        info: {
+          id: number;
+          name: string;
+        };
+      };
+    }
+
+    function printAuthorInfo(author: Post["author"]["info"]) {
+      console.log(`${author.id} - ${author.name}`);
+    }
+
+
+      /**
+    * 실제 회사에서도 이런 경우가 많았다.
+    * 컴포넌트 내부에서 특정 타입의 일부 필드값만을 넘기거나 처리할 때, 인터페이스에서 특정 속성을 뽑아 처리
+    * 또는 특정 타입을 잘개 쪼개 합치고 각각을 export했다.
+    * -> 프로퍼티가 수정되거나 추가되어도 수정하지 않아도 되며 유연하게 처리 가능
+    */
+  ```
+
+- ArrType[number]를 사용하면 특정 배열의 "요소"를 추출 할 수 있다.
+  - DataList[0]과 같이 정수형 리터럴 값을 넣어도 됨
+- 튜플도 마찬가지로 응용 가능
+
+  - ```
+
+    type Tup = [number, string, boolean];
+    type Tup2 = Tup[2];
+    // boolean
+
+    type Tup3 = Tup[number];
+    // number | string | boolean
+
+    ```
+
+## 8.2 keyof 연산자
+
+- 특정 프로퍼티의 모든 Key들을 union타입으로 추출하는 연산자
+- ```
+      interface Product {
+        id: number;
+        name: string;
+        price: number;
+        description: string;
+      }
+
+      // K에는 'id' | 'name' | 'price' | 'description' 을 타입으로 가지는 값만 올 수 있다.
+      function getProp<T, K extends keyof T>(obj: T, key: K): T[K] {
+        return obj[key];
+      }
+  ```
+
+- ```
+    // keyof는 "타입"에만 사용할 수 있다.
+    // -> 변수의 경우 typeof를 통해 타입을 추출 후 사용하도록 하자.
+    // @ts-expect-error
+    function getPropertyKey(product: Product, key: keyof product) {
+      // @ts-expect-error
+      return product[key];
+    }
+
+    function getPropertyKey_(product: Product, key: keyof typeof product) {
+      return product[key];
+    }
+
+  ```
+
+## 8.3 Mapped Types
+
+- ```
+
+  type Optional<T extends object> = {
+  [key in keyof T]?: T[key];
+  };
+
+  type MyPartialUser = Optional<User>;
+
+  ```
+
+## 8.4 템플릿 리터럴 타입
+
+- ```
+
+    /**
+    * - 템플릿 리터럴을 사용해 특정 패턴을 갖는 "String" 타입을 만드는 기능
+    */
+
+    type Color = "red" | "black" | "green";
+    type Animal = "dog" | "cat" | "chicken";
+
+    type ColoredAnimal = `red-dog` | "red-cat" | "red-chicken" | "black-dog"; // ...
+
+    type ColoredAnimal_ = `${Color}-${Animal}`;
+
+    // TODO : CIDR을 정의하는 예제
+    // https://toss.tech/article/template-literal-types
+
+
+  ```

@@ -93,3 +93,13 @@ type Tup2 = Tup[2];
 
 type Tup3 = Tup[number];
 // number | string | boolean
+
+/**
+ * exp
+ */
+
+interface Test {
+  multiType: string | number | boolean;
+}
+
+const test: Test["multiType"] = 1;
