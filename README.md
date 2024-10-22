@@ -773,3 +773,76 @@ narrowParam = wideParam; // ✅
 
 
   ```
+
+# 9. 타입 응용
+
+## 9.1 조건부 타입
+
+- 타입에 따라 각각 다른 타입을 정의하도록 돕는 문법
+- `type StringNumberSwitch<T> = T extends number ? string : number;`
+- 함수 오버로딩을 활용해 내부의 동적인 타입 추론을 도울 수 있다
+- ```
+       /**
+   *  위 코드는 string | undefined를 반환하고 있다. 문자열이 들어간다면 string이 반환됨을 확실히 하고싶다면?
+   */
+
+   function removeSpaces_error<T extends string | undefined | null>(
+     text: T
+   ): T extends string ? string : undefined {
+     if (typeof text === "string") {
+       // @ts-expect-error
+       return text.replaceAll(" ", "");
+     }
+     // @ts-expect-error
+     return undefined;
+   }
+
+   // 위 형태는 에러가 난다. 왜냐하면 런타임 로직에 기반한 반환 타입을 조건부로 표현할 수 없기 때문 (T가 뭔지 모른다)
+   // 'string' 형식은 'T extends string ? string : undefined' 형식에 할당할 수 없습니다.ts(2322)
+
+   // 아래와 같이 함수 오버로딩을 사용하자
+
+   // function removeSpaces(text: string): string;
+   // function removeSpaces(text: undefined | null): undefined;
+   function removeSpaces<T>(text: T): T extends string ? string : undefined;
+   function removeSpaces(text: string | undefined | null) {
+     if (typeof text === "string") {
+       return text.replaceAll(" ", "");
+     }
+
+     return undefined;
+   }
+
+   let result = removeSpaces("hi im winterlood");
+   // string
+
+   let result2 = removeSpaces(undefined);
+   // undefined
+
+
+  ```
+
+## 9.2 분산적인 조건부 타입
+
+- 타입에 "유니온" 을 넘기면 다음과 같은 분산 평가가 진행된다
+  - 각 유니온 타입을 분리
+  - 분리된 각 타입을 추론
+  - 결과 값을 유니온으로 합성
+- ```
+    type StringNumberSwitch<T> = T extends number ? string : number;
+
+    let c: StringNumberSwitch<number | string>;
+    // string | number
+
+  ```
+
+- 분산 평가를 막기 위해선 배열로 래핑하면 된다
+
+  - 단일 배열로 가진 배열로 취급되 분산 평가 되지 않음
+  - ```
+    type StringNumberSwitch_<T> = [T] extends [number] ? string : number;
+
+    let c_: StringNumberSwitch_<number | string>;
+    //  number
+
+    ```
