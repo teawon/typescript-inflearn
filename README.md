@@ -846,3 +846,19 @@ narrowParam = wideParam; // ✅
     //  number
 
     ```
+
+  - never로 선언한 타입이 사라지는 이유
+
+    - ```
+       Exclude<string | boolean , boolean>
+       Exclude<T,U> = T extends U ? never : T;
+       Exclude<string,boolean> | Exclude<boolean,boolean>
+       string | never
+       string // never는 공집합이므로
+      ```
+
+## 10. 타입스크립트 유틸리티 타입
+
+- Pick vs Extract
+  - => Pick은 객체 타입의 프로퍼티를 추출
+  - => Extract는 유니온 타입의 교집합을 추출
